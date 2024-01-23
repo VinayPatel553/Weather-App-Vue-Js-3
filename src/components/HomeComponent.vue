@@ -1,4 +1,6 @@
 <template>
+    <div class="div">
+    <div class="wrapper">
     <div class="header container h-100 p-4">
         <h1 class="mb-3"><img src="../assets/weather-logo.png" height="90px" width="150px"></h1>
         <div class="d-flex justify-content-center h-100">
@@ -13,8 +15,17 @@
             </button>
         </div>
     </div>
+    </div>
     <br>
          <WeatherComponent :city="city" v-if="showWeather"/>
+
+         <footer class="text-center fs-5 footer">
+            <div class="text-center p-3">
+                Made By:
+                <a class="text-white" target="_blank" href="https://vinay-portfolio-pi.vercel.app/">Vinay Patel</a>
+            </div>
+        </footer>
+    </div>
 </template>
 
 <script>
@@ -32,14 +43,35 @@ import WeatherComponent from '../components/WeatherComponent.vue';
         },
         methods:{
             async searchWeather(){
-                this.showWeather = false;
-                await this.$nextTick();
-                this.showWeather = true
+                if(this.city.length<=0){
+                    document.addEventListener("click", function(){ alert("Please enter a city name"); });
+                }
+                else{
+                    this.showWeather = false;
+                    await this.$nextTick();
+                    this.showWeather = true
+                }
+                
             }
         },
     }
 </script>
 
 <style scoped>
+.div {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.wrapper {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+}
 
+.footer {
+  background-color: #212730;
+  margin-top: auto; 
+  color: white;
+}
 </style>
