@@ -1,2 +1,24 @@
-# Weather-App-Vue-Js-3
-Weather Application built with Vue Js 3,HTML,CSS,Bootstrap and Javascript and Fetched Weather Data from: https://openweathermap.org/
+# weather-app
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
