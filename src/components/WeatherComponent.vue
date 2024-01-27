@@ -1,5 +1,8 @@
 <template>
     <div class="container p-0 mb-3">
+        <div class="alert alert-primary" role="alert" v-if="showAlert">
+            Showing results for <strong>{{ this.cityname }}</strong>
+        </div>
         <div class="d-flex flex-column flex-md-row">
             <div class="card main-div w-100">
                 <div class="p-3">
@@ -72,33 +75,45 @@ import DaysWeather from '../components/DaysWeather.vue';
                 wind:null,
                 humidity:null,
                 country:null,
+                showAlert:true,
                 monthNammes:["January","Feburary","March","April","May","June",
                             "July","August","September","October","November","December",]
+                            
             }
         },
         methods:{
             changeLocation(){
                 window.location.reload();
+            },
+            dismissAlert(){
+                setTimeout(() => {
+                    this.showAlert = false;
+                }, 1500);
             }
         },
         async created(){
-            const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&APPID=2d904ac69cf40ef33bb83a76f4cae686`);
-            const weatherData = response.data;
-            this.temprature = Math.round(weatherData.main.temp);
-            this.description = weatherData.weather[0].description;
-            this.name = weatherData.name;
-            this.wind = weatherData.wind.speed;
-            this.humidity = weatherData.main.humidity;
-            this.visibility = weatherData.visibility;
-            this.country = weatherData.sys.country;
-            this.iconUrl = `https://api.openweathermap.org/img/w/${weatherData.weather[0].icon}.png`;
-            const d = new Date();
-            this.date = d.getDate() + '-' + this.monthNammes[d.getMonth()]+ '-' +d.getFullYear();
-            this.time = d.getHours() + ':' + d.getMinutes()+ ':' + d.getSeconds(); 
-            const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()];
-            this.day = dayOfWeek;
-
-            console.log(weatherData);
+            try {
+                const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&APPID=2d904ac69cf40ef33bb83a76f4cae686`);
+                const weatherData = response.data;
+                this.temprature = Math.round(weatherData.main.temp);
+                this.description = weatherData.weather[0].description;
+                this.name = weatherData.name;
+                this.wind = weatherData.wind.speed;
+                this.humidity = weatherData.main.humidity;
+                this.visibility = weatherData.visibility;
+                this.country = weatherData.sys.country;
+                this.iconUrl = `https://api.openweathermap.org/img/w/${weatherData.weather[0].icon}.png`;
+                const d = new Date();
+                this.date = d.getDate() + '-' + this.monthNammes[d.getMonth()]+ '-' +d.getFullYear();
+                this.time = d.getHours() + ':' + d.getMinutes()+ ':' + d.getSeconds(); 
+                const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()];
+                this.day = dayOfWeek;
+                this.dismissAlert();
+            } catch (error) {
+                console.error('Error fetching weather data: ', error);
+                alert(`🛑 Error fetching data for '${this.cityname}' Please check and enter a valid city name`);
+                window.location.reload();
+            }
         }
     }
 </script>
